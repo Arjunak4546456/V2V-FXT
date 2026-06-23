@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Market System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, rgba(140, 80, 255, 0.18), transparent 35%),
+                linear-gradient(135deg, #05030a 0%, #10051f 35%, #1b0a33 65%, #09040f 100%);
+            color: #f3e9ff;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(173, 120, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(173, 120, 255, 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            opacity: 0.25;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 28px 18px 40px;
+        }
+
+        .header {
+            width: 100%;
+            max-width: 1100px;
+            text-align: center;
+            padding: 18px 20px;
+            border: 1px solid rgba(204, 153, 255, 0.28);
+            background: linear-gradient(180deg, rgba(75, 20, 110, 0.75), rgba(18, 8, 34, 0.92));
+            box-shadow: 0 0 20px rgba(143, 72, 255, 0.18), inset 0 0 25px rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            backdrop-filter: blur(6px);
+        }
+
+        .header h1 {
+            font-size: 34px;
+            letter-spacing: 1.5px;
+            color: #f2d7ff;
+            text-shadow: 0 0 10px rgba(201, 139, 255, 0.45);
+        }
+
+        .header p {
+            margin-top: 8px;
+            color: #cab7df;
+            font-size: 16px;
+        }
+
+        .cards {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 34px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            position: relative;
+            min-height: 320px;
+            padding: 28px;
+            border-radius: 20px;
+            background:
+                linear-gradient(180deg, rgba(58, 18, 88, 0.75), rgba(8, 8, 18, 0.95));
+            border: 1px solid rgba(195, 133, 255, 0.26);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.02),
+                0 0 24px rgba(126, 56, 255, 0.16),
+                inset 0 0 30px rgba(255, 255, 255, 0.02);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(183, 102, 255, 0.18), transparent 42%);
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.04),
+                0 0 34px rgba(154, 82, 255, 0.28),
+                inset 0 0 35px rgba(255, 255, 255, 0.03);
+        }
+
+        .icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, rgba(182, 108, 255, 0.22), rgba(105, 40, 175, 0.2));
+            border: 1px solid rgba(220, 175, 255, 0.3);
+            box-shadow: inset 0 0 18px rgba(255,255,255,0.05);
+        }
+
+        .card h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #f2d7ff;
+        }
+
+        .card p {
+            color: #d0c0e6;
+            line-height: 1.7;
+            font-size: 16px;
+            margin-bottom: 22px;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 26px;
+        }
+
+        .features li {
+            margin-bottom: 10px;
+            color: #e7ddf4;
+            padding-left: 18px;
+            position: relative;
+            font-size: 15px;
+        }
+
+        .features li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #c78cff;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 13px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            letter-spacing: 0.4px;
+            transition: 0.25s ease;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+        }
+
+        .farmer-btn {
+            background: linear-gradient(135deg, #7e2cff, #b75cff);
+            box-shadow: 0 0 18px rgba(152, 80, 255, 0.35);
+        }
+
+        .customer-btn {
+            background: linear-gradient(135deg, #3d4cff, #7f62ff);
+            box-shadow: 0 0 18px rgba(90, 110, 255, 0.32);
+        }
+
+        .footer {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 28px;
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(205, 146, 255, 0.22);
+            background: rgba(20, 10, 36, 0.72);
+            color: #cfbce7;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+
+            .card {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>V2V FXT</h1>
+            <p>Direct farmer-to-customer marketplace with separate login access</p>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <div class="icon">👨‍🌾</div>
+                <h2>Farmer Login</h2>
+                <p>Login as a farmer to add products, manage stock, and sell directly without middlemen.</p>
+                <ul class="features">
+                    <li>Upload crops and pricing</li>
+                    <li>Manage stock and availability</li>
+                    <li>View customer orders</li>
+                </ul>
+                <a class="btn farmer-btn" href="farmer.html">Go to Farmer Login</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">🛒</div>
+                <h2>Customer Login</h2>
+                <p>Login as a customer to explore farm products, compare prices, and order fresh produce directly.</p>
+                <ul class="features">
+                    <li>Browse farm products</li>
+                    <li>Place direct orders</li>
+                    <li>Track purchases easily</li>
+                </ul>
+                <a class="btn customer-btn" href="customer.html">Go to Customer Login</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h2><i>The place where farmer decides the price.</i><h2>
+        </div>
+    </div>
+</body>
+</html>

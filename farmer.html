@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, rgba(140, 80, 255, 0.18), transparent 35%),
+                linear-gradient(135deg, #05030a 0%, #10051f 35%, #1b0a33 65%, #09040f 100%);
+            color: #f3e9ff;
+            padding: 24px 14px 40px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(173, 120, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(173, 120, 255, 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            opacity: 0.25;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 18px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(204, 153, 255, 0.28);
+            background: linear-gradient(180deg, rgba(75, 20, 110, 0.75), rgba(18, 8, 34, 0.92));
+            box-shadow: 0 0 20px rgba(143, 72, 255, 0.18), inset 0 0 25px rgba(255, 255, 255, 0.03);
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #f2d7ff;
+            text-shadow: 0 0 10px rgba(201, 139, 255, 0.45);
+        }
+
+        .header p {
+            margin-top: 8px;
+            color: #cab7df;
+            font-size: 15px;
+        }
+
+        .form-card {
+            padding: 28px;
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(58, 18, 88, 0.75), rgba(8, 8, 18, 0.95));
+            border: 1px solid rgba(195, 133, 255, 0.26);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.02),
+                0 0 24px rgba(126, 56, 255, 0.16),
+                inset 0 0 30px rgba(255, 255, 255, 0.02);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #e7ddf4;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(205, 146, 255, 0.26);
+            outline: none;
+            background: rgba(10, 8, 20, 0.95);
+            color: #f7efff;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.03);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #a895bf;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .section-title {
+            margin: 26px 0 14px;
+            color: #d9b8ff;
+            font-size: 18px;
+            border-left: 4px solid #b75cff;
+            padding-left: 10px;
+        }
+
+        .actions {
+            margin-top: 24px;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+        }
+
+        .save {
+            background: linear-gradient(135deg, #7e2cff, #b75cff);
+            box-shadow: 0 0 18px rgba(152, 80, 255, 0.35);
+        }
+
+        .back {
+            background: linear-gradient(135deg, #3d4cff, #7f62ff);
+            box-shadow: 0 0 18px rgba(90, 110, 255, 0.32);
+        }
+
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>Farmer Registration Form</h1>
+            <p>Enter complete farmer details for direct marketplace onboarding</p>
+        </div>
+
+        <div class="form-card">
+            <form action="FarmerRegisterServlet" method="post" enctype="multipart/form-data">
+                <div class="section-title">Personal Details</div>
+                <div class="grid">
+                    <div class="field">
+                        <label>First Name</label>
+                        <input type="text" name="firstName" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Last Name</label>
+                        <input type="text" name="lastName" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Gender</label>
+                        <select name="gender" required>
+                            <option value="">Select</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Date of Birth</label>
+                        <input type="date" name="dob" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Aadhaar Number</label>
+                        <input type="text" name="aadhaar" required>
+                    </div>
+
+                    <div class="field">
+                        <label>PAN Number</label>
+                        <input type="text" name="pan" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Mobile Number</label>
+                        <input type="tel" name="mobile" required>
+                    </div>
+                </div>
+
+                <div class="section-title">Address Details</div>
+                <div class="grid">
+                    <div class="field full">
+                        <label>House / Door Number</label>
+                        <input type="text" name="doorNo" required>
+                    </div>
+
+                    <div class="field full">
+                        <label>Street / Area</label>
+                        <input type="text" name="street" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Village</label>
+                        <input type="text" name="village" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Taluk / Mandal</label>
+                        <input type="text" name="taluk" required>
+                    </div>
+
+                    <div class="field">
+                        <label>District</label>
+                        <input type="text" name="district" required>
+                    </div>
+
+                    <div class="field">
+                        <label>State</label>
+                        <input type="text" name="state" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Pincode</label>
+                        <input type="text" name="pincode" required>
+                    </div>
+                </div>
+
+                <div class="section-title">Farm Details</div>
+                <div class="grid">
+                    <div class="field">
+                        <label>Farm Name</label>
+                        <input type="text" name="farmName" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Farm Type</label>
+                        <select name="farmType" required>
+                            <option value="">Select</option>
+                            <option>Small Scale</option>
+                            <option>Medium Scale</option>
+                            <option>Large Scale</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Years of Experience</label>
+                        <input type="number" name="experience" min="0" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Land Size</label>
+                        <input type="text" name="landSize" placeholder="e.g., 2 acres" required>
+                    </div>
+
+                    <div class="field full">
+                        <label>Main Crops Grown</label>
+                        <input type="text" name="crops" placeholder="e.g., paddy, tomato, banana" required>
+                    </div>
+
+                    <div class="field full">
+                        <label>Other Farming Details</label>
+                        <textarea name="farmingDetails" placeholder="Irrigation, livestock, organic farming, seasonal crops, etc."></textarea>
+                    </div>
+                </div>
+
+                <div class="section-title">Bank and Payment Details</div>
+                <div class="grid">
+                    <div class="field">
+                        <label>Bank Name</label>
+                        <input type="text" name="bankName" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Account Holder Name</label>
+                        <input type="text" name="accountHolder" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Account Number</label>
+                        <input type="text" name="accountNumber" required>
+                    </div>
+
+                    <div class="field">
+                        <label>IFSC Code</label>
+                        <input type="text" name="ifsc" required>
+                    </div>
+
+                    <div class="field">
+                        <label>UPI ID</label>
+                        <input type="text" name="upiId">
+                    </div>
+
+                    <div class="field">
+                        <label>Branch Name</label>
+                        <input type="text" name="branchName" required>
+                    </div>
+                </div>
+
+                <div class="section-title">Login Details</div>
+                <div class="grid">
+                    <div class="field">
+                        <label>Username</label>
+                        <input type="text" name="username" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Password</label>
+                        <input type="password" name="password" required>
+                    </div>
+                </div>
+
+                <div class="section-title">Uploads</div>
+                <div class="grid">
+                    <div class="field">
+                        <label>Profile Photo</label>
+                        <input type="file" name="profilePhoto">
+                    </div>
+
+                    <div class="field">
+                        <label>Land Document</label>
+                        <input type="file" name="landDocument">
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn save">Submit Farmer Details</button>
+                    <a href="index.html" class="btn back">Back to Home</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
